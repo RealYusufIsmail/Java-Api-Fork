@@ -10,13 +10,10 @@ public class EchoComponent implements IModule {
 
     public void execute(ExecutionParameters parameters) {
 
-        final JsonObject snapshot = Json.createObjectBuilder()
-                .add("echo", parameters.getSnapshot())
-                .build();
+        final JsonObject snapshot =
+                Json.createObjectBuilder().add("echo", parameters.getSnapshot()).build();
 
-        parameters.getEventEmitter()
-                .emitSnapshot(snapshot)
-                .emitData(echoMessage(parameters));
+        parameters.getEventEmitter().emitSnapshot(snapshot).emitData(echoMessage(parameters));
     }
 
     private Message echoMessage(ExecutionParameters parameters) {
@@ -24,13 +21,10 @@ public class EchoComponent implements IModule {
         final Message msg = parameters.getMessage();
 
         final JsonObject body = Json.createObjectBuilder()
-                .add("echo", msg.getBody())
-                .add("config", parameters.getConfiguration())
-                .build();
+            .add("echo", msg.getBody())
+            .add("config", parameters.getConfiguration())
+            .build();
 
-        return new Message.Builder()
-                .body(body)
-                .attachments(msg.getAttachments())
-                .build();
+        return new Message.Builder().body(body).attachments(msg.getAttachments()).build();
     }
 }

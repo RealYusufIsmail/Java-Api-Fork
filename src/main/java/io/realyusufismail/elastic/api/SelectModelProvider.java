@@ -9,11 +9,11 @@ import jakarta.json.JsonObject;
 public interface SelectModelProvider {
 
     /**
-     * Allows a component to dynamically populate select boxes.
-     * The given <i>configuration</i> object contains authentication data
-     * that might be required if the values are retrieved from the desired service.
-     * The method must return a simple JSON object in which the keys are mapped
+     * Allows a component to dynamically populate select boxes. The given <i>configuration</i>
+     * object contains authentication data that might be required if the values are retrieved from
+     * the desired service. The method must return a simple JSON object in which the keys are mapped
      * to human readable labels, as shown in the following example.
+     * 
      * <pre>
      * <code>
      *

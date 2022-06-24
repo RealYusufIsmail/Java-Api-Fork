@@ -60,8 +60,7 @@ public final class JSON {
             return null;
         }
 
-        final JsonReader reader = Json.createReader(
-                new ByteArrayInputStream(input.getBytes()));
+        final JsonReader reader = Json.createReader(new ByteArrayInputStream(input.getBytes()));
 
         return reader;
     }

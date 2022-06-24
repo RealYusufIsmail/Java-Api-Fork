@@ -1,14 +1,13 @@
 package io.realyusufismail.elastic.api;
 
-import io.elastic.api.EventEmitter;
 import jakarta.json.Json;
 import jakarta.json.JsonObject;
 
 import java.io.Serializable;
 
 /**
- * Represents parameters for a {@link IModule} execution passed
- * to {@link IModule#execute(ExecutionParameters)}.
+ * Represents parameters for a {@link IModule} execution passed to
+ * {@link IModule#execute(ExecutionParameters)}.
  */
 public final class ExecutionParameters implements Serializable {
 
@@ -19,10 +18,8 @@ public final class ExecutionParameters implements Serializable {
     private final JsonObject snapshot;
     private final EventEmitter eventEmitter;
 
-    private ExecutionParameters(final Message message,
-                                final EventEmitter eventEmitter,
-                                final JsonObject configuration,
-                                final JsonObject snapshot) {
+    private ExecutionParameters(final Message message, final EventEmitter eventEmitter,
+            final JsonObject configuration, final JsonObject snapshot) {
         this.message = message;
         this.configuration = configuration;
         this.snapshot = snapshot;
@@ -134,11 +131,7 @@ public final class ExecutionParameters implements Serializable {
 
     @Override
     public String toString() {
-        return "ExecutionParameters{" +
-                "message=" + message +
-                ", configuration=" + configuration +
-                ", snapshot=" + snapshot +
-                ", eventEmitter=" + eventEmitter +
-                '}';
+        return "ExecutionParameters{" + "message=" + message + ", configuration=" + configuration
+                + ", snapshot=" + snapshot + ", eventEmitter=" + eventEmitter + '}';
     }
 }

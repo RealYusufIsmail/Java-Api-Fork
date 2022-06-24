@@ -10,18 +10,19 @@ import java.io.StringWriter;
 import java.util.UUID;
 
 /**
- * Message to be processed by a {@link IModule}. A message may have a body,
- * which represents a message's payload to be processed, and multiple attachments.
- * Both body and attachments are {@link JsonObject}s.
+ * Message to be processed by a {@link IModule}. A message may have a body, which represents a
+ * message's payload to be processed, and multiple attachments. Both body and attachments are
+ * {@link JsonObject}s.
  *
  * <p>
  *
- * A {@link IModule} may retrieve a value from {@link Message}'s body by a name,
- * as shown in the following example.
+ * A {@link IModule} may retrieve a value from {@link Message}'s body by a name, as shown in the
+ * following example.
  *
  * <pre>
- * {@code
- *    JsonArray orders = message.getBody().getJsonArray("orders");
+ * {
+ *     &#64;code
+ *     JsonArray orders = message.getBody().getJsonArray("orders");
  * }
  * </pre>
  *
@@ -30,14 +31,13 @@ import java.util.UUID;
  * A message is build using {@link Builder}, as shown in the following example.
  *
  * <pre>
- * {@code
- *    JsonArray orders = JSON.parseArray(response.getOrders());
+ * {
+ *     &#64;code
+ *     JsonArray orders = JSON.parseArray(response.getOrders());
  *
- *    JsonObject body = Json.createObjectBuilder()
- *            .add("orders", orders)
- *            .build();
+ *     JsonObject body = Json.createObjectBuilder().add("orders", orders).build();
  *
- *    Message message = new Message.Builder().body(body).build();
+ *     Message message = new Message.Builder().body(body).build();
  * }
  * </pre>
  */
@@ -60,17 +60,14 @@ public class Message implements Serializable {
     /**
      * Creates a message with headers, body and attachments.
      *
-     * @param id          id of the message
-     * @param headers     headers of the message
-     * @param body        body of the message
+     * @param id id of the message
+     * @param headers headers of the message
+     * @param body body of the message
      * @param attachments attachments of the message
      * @param passthrough passthrough of the message
      */
-    private Message(final UUID id,
-                    final JsonObject headers,
-                    final JsonObject body,
-                    final JsonObject attachments,
-                    final JsonObject passthrough) {
+    private Message(final UUID id, final JsonObject headers, final JsonObject body,
+            final JsonObject attachments, final JsonObject passthrough) {
 
         if (id == null) {
             throw new IllegalArgumentException("Message id must not be null");
@@ -151,12 +148,12 @@ public class Message implements Serializable {
      */
     public JsonObject toJsonObject() {
         return Json.createObjectBuilder()
-                .add(PROPERTY_ID, id.toString())
-                .add(PROPERTY_HEADERS, headers)
-                .add(PROPERTY_BODY, body)
-                .add(PROPERTY_ATTACHMENTS, attachments)
-                .add(PROPERTY_PASSTHROUGH, passthrough)
-                .build();
+            .add(PROPERTY_ID, id.toString())
+            .add(PROPERTY_HEADERS, headers)
+            .add(PROPERTY_BODY, body)
+            .add(PROPERTY_ATTACHMENTS, attachments)
+            .add(PROPERTY_PASSTHROUGH, passthrough)
+            .build();
     }
 
     @Override
@@ -260,7 +257,8 @@ public class Message implements Serializable {
          * @return Message
          */
         public Message build() {
-            return new Message(this.id, this.headers, this.body, this.attachments, this.passthrough);
+            return new Message(this.id, this.headers, this.body, this.attachments,
+                    this.passthrough);
         }
     }
 }

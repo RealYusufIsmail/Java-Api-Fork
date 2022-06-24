@@ -7,9 +7,8 @@ import org.slf4j.LoggerFactory;
 /**
  * Used by a {@link IModule} to communicate with the elastic.io runtime.
  * 
- * The implementation of this class has been inspired by the <a
- * href="http://nodejs.org/api/events.html" target="_blank">Node.js
- * EventEmitter</a> class.
+ * The implementation of this class has been inspired by the
+ * <a href="http://nodejs.org/api/events.html" target="_blank">Node.js EventEmitter</a> class.
  * 
  * @see IModule
  */
@@ -23,12 +22,8 @@ public final class EventEmitter {
     private Callback updateKeysCallback;
     private Callback httpReplyCallback;
 
-    private EventEmitter(Callback errorCallback,
-                         Callback dataCallback,
-                         Callback snapshotCallback,
-                         Callback reboundCallback,
-                         Callback updateKeysCallback,
-                         Callback httpReplyCallback) {
+    private EventEmitter(Callback errorCallback, Callback dataCallback, Callback snapshotCallback,
+            Callback reboundCallback, Callback updateKeysCallback, Callback httpReplyCallback) {
         this.errorCallback = errorCallback;
         this.dataCallback = dataCallback;
         this.snapshotCallback = snapshotCallback;
@@ -38,13 +33,12 @@ public final class EventEmitter {
     }
 
     /**
-     * Emits an {@link Exception}. Used to emit an exception from component
-     * written in asynchronous style, for example using
-     * <a href="https://github.com/ReactiveX/RxJava" target="_blank">Reactive Extensions for the JVM </a>.
-     * Any non-asynchronous may throw an exception instead of using this method.
+     * Emits an {@link Exception}. Used to emit an exception from component written in asynchronous
+     * style, for example using
+     * <a href="https://github.com/ReactiveX/RxJava" target="_blank">Reactive Extensions for the JVM
+     * </a>. Any non-asynchronous may throw an exception instead of using this method.
      * 
-     * @param e
-     *            exception to emit
+     * @param e exception to emit
      * @return this instance
      */
     public EventEmitter emitException(Exception e) {
@@ -55,8 +49,7 @@ public final class EventEmitter {
     /**
      * Emits a {@link Message}.
      * 
-     * @param message
-     *            message to emit
+     * @param message message to emit
      * @return this instance
      */
     public EventEmitter emitData(Message message) {
@@ -67,34 +60,32 @@ public final class EventEmitter {
     /**
      * Emits {@link JsonObject} snapshot.
      * 
-     * @param snapshot
-     *            snapshot to emit
+     * @param snapshot snapshot to emit
      * @return this instance
      */
     public EventEmitter emitSnapshot(JsonObject snapshot) {
 
         return emit(snapshotCallback, snapshot);
     }
-    
+
     /**
      * Emits the rebound event specifying a {@link Object} reason.
      * 
-     * @param reason
-     *            reason for rebound
+     * @param reason reason for rebound
      * @return this instance
      */
     public EventEmitter emitRebound(Object reason) {
-        
+
         return emit(reboundCallback, reason);
     }
 
     /**
-     * Emits the updateKeys event. This method is typically used in components authorizing with OAuth2 apis.
-     * If an access token is expired, the component needs to refresh them. The refreshed tokens need to be communicated
-     * to the elastic.io platform so that the component is executed with refreshed tokens next time.
+     * Emits the updateKeys event. This method is typically used in components authorizing with
+     * OAuth2 apis. If an access token is expired, the component needs to refresh them. The
+     * refreshed tokens need to be communicated to the elastic.io platform so that the component is
+     * executed with refreshed tokens next time.
      *
-     * @param object
-     *            object containing the tokens
+     * @param object object containing the tokens
      * @return this instance
      */
     public EventEmitter emitUpdateKeys(JsonObject object) {
@@ -103,10 +94,10 @@ public final class EventEmitter {
     }
 
     /**
-     * Emits the httpReply event. This method is typically used to emit a HTTP reply in real-time flows.
+     * Emits the httpReply event. This method is typically used to emit a HTTP reply in real-time
+     * flows.
      *
-     * @param reply
-     *            HTTP reply
+     * @param reply HTTP reply
      * @return this instance
      */
     public EventEmitter emitHttpReply(final HttpReply reply) {
@@ -139,8 +130,7 @@ public final class EventEmitter {
         /**
          * Invoked to pass errors, data and snapshots asynchronously.
          * 
-         * @param data
-         *            data to be passed
+         * @param data data to be passed
          */
         void receive(Object data);
     }
@@ -165,8 +155,7 @@ public final class EventEmitter {
          * 
          * Adds 'error' {@link Callback}.
          * 
-         * @param callback
-         *            callback invoked on error event
+         * @param callback callback invoked on error event
          * @return this instance
          */
         public Builder onError(Callback callback) {
@@ -178,8 +167,7 @@ public final class EventEmitter {
         /**
          * Adds 'data' {@link Callback}.
          * 
-         * @param callback
-         *            callback invoked on data event
+         * @param callback callback invoked on data event
          * @return this instance
          */
         public Builder onData(Callback callback) {
@@ -191,8 +179,7 @@ public final class EventEmitter {
         /**
          * Adds 'snapshot' {@link Callback}.
          * 
-         * @param callback
-         *            callback invoked on snapshot event
+         * @param callback callback invoked on snapshot event
          * @return this instance
          */
         public Builder onSnapshot(Callback callback) {
@@ -204,21 +191,19 @@ public final class EventEmitter {
         /**
          * Adds 'rebound' {@link Callback}.
          * 
-         * @param callback
-         *            callback invoked on rebound event
+         * @param callback callback invoked on rebound event
          * @return this instance
          */
         public Builder onRebound(Callback callback) {
             this.reboundCallback = callback;
-            
+
             return this;
         }
 
         /**
          * Adds 'updateAccessToken' {@link Callback}.
          *
-         * @param callback
-         *            callback invoked on updateAccessToken event
+         * @param callback callback invoked on updateAccessToken event
          * @return this instance
          */
         public Builder onUpdateKeys(Callback callback) {
@@ -232,8 +217,7 @@ public final class EventEmitter {
          *
          * @since 2.0
          *
-         * @param callback
-         *            callback invoked on httpReply event
+         * @param callback callback invoked on httpReply event
          * @return this instance
          */
         public Builder onHttpReplyCallback(Callback callback) {
@@ -241,7 +225,7 @@ public final class EventEmitter {
 
             return this;
         }
-        
+
         /**
          * Builds an {@link EventEmitter} instance and returns it.
          * 
@@ -261,21 +245,16 @@ public final class EventEmitter {
                 throw new IllegalStateException("'onSnapshot' callback is required");
             }
 
-            if(this.reboundCallback == null) {
+            if (this.reboundCallback == null) {
                 throw new IllegalStateException("'onRebound' callback is required");
             }
 
-            if(this.httpReplyCallback == null) {
+            if (this.httpReplyCallback == null) {
                 throw new IllegalStateException("'onHttpReplyCallback' callback is required");
             }
-            
-            return new EventEmitter(
-                    errorCallback,
-                    dataCallback,
-                    snapshotCallback,
-                    reboundCallback,
-                    updateKeysCallback,
-                    httpReplyCallback);
+
+            return new EventEmitter(errorCallback, dataCallback, snapshotCallback, reboundCallback,
+                    updateKeysCallback, httpReplyCallback);
         }
     }
 
