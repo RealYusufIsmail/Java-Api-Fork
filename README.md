@@ -9,6 +9,6 @@ To add the fork to your project, add the following to your gradle
     }
 
     dependencies {
-        implementation 'io.github.realyusufismail:java-api:1.0.0'
+        implementation 'io.github.realyusufismail:java-api:2.2.2-SNAPSHOT'
     }
 
