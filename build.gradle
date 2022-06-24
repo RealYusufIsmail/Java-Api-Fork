@@ -22,8 +22,8 @@ apply plugin: 'signing'
 
 archivesBaseName = "Java Api Fork"
 description = "A fork of Java Api"
-group 'io.realyusufismail.elastic'
-version '2.1.2-SNAPSHOT'
+group 'io.github.realyusufismail'
+version '1.0.0'
 
 repositories {
     mavenCentral()
