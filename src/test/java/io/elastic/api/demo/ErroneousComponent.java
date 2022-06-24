@@ -1,9 +1,9 @@
 package io.elastic.api.demo;
 
-import io.elastic.api.Module;
-import io.elastic.api.ExecutionParameters;
+import io.realyusufismail.elastic.api.ExecutionParameters;
+import io.realyusufismail.elastic.api.IModule;
 
-public class ErroneousComponent implements Module {
+public class ErroneousComponent implements IModule {
 
     @Override
     public void execute(ExecutionParameters parameters) {

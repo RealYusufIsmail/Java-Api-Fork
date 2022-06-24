@@ -1,116 +1,148 @@
-apply plugin: 'java'
-apply plugin: 'groovy'
-apply plugin: 'eclipse'
-apply plugin: 'idea'
-apply plugin: 'java-library-distribution'
-apply plugin: 'maven'
+plugins {
+    id 'java'
+    id "com.diffplug.spotless" version "6.6.1"
+}
+
+ext {
+    dev_id = 'yusuf'
+    dev_name = 'Yusuf Ismail'
+    dev_email = 'yusufgamer222@gmail.com'
+    dev_organization = 'RealYusufIsmail'
+    dev_organizationUrl = 'https://github.com/RealYusufIsmail'
+
+    gpl_name = 'The Apache Software License, Version 2.0'
+    gpl_url = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+
+    // Make sure we have a default for initial configuration evaluation
+    isReleaseVersion = false
+}
+
+sourceCompatibility = 17
+targetCompatibility = 17
+
+apply plugin: 'maven-publish'
 apply plugin: 'signing'
 
-group = 'io.elastic'
-version = '2.1.1-SNAPSHOT'
-ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
-
-sourceCompatibility = 1.8
-targetCompatibility = 1.8
-
-signing {
-    required { isReleaseVersion && gradle.taskGraph.hasTask("uploadArchives") }
-    sign configurations.archives
-}
+archivesBaseName = "Java Api Fork"
+description = "A fork of Java Api"
+group 'io.realyusufismail.elastic'
+version '2.1.2-SNAPSHOT'
 
 repositories {
     mavenCentral()
-    mavenLocal()
 }
 
 dependencies {
-    compile "org.glassfish:javax.json:1.0.4"
-    compile "ch.qos.logback:logback-classic:1.2.1"
-    testRuntime "org.codehaus.groovy:groovy-all:2.0.5"
-    testCompile "org.spockframework:spock-core:0.7-groovy-2.0"
+    implementation 'org.glassfish:jakarta.json:2.0.1'
+    implementation 'ch.qos.logback:logback-classic:1.2.11'
+    implementation 'ch.qos.logback:logback-core:1.2.11'
+    testImplementation 'org.codehaus.groovy:groovy-all:3.0.11'
+    testImplementation 'org.spockframework:spock-core:2.2-M1-groovy-4.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
 }
 
+test {
+    useJUnitPlatform()
+}
 
-uploadArchives {
+compileJava {
+    // Makes spotlessApply task run on every compile/build.
+    dependsOn 'spotlessApply'
+
+    // Nails the Java-Version of every Subproject
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+spotless {
+    java {
+        // Excludes build folder since it contains generated java classes.
+        targetExclude("build/**")
+        eclipse('4.21.0').configFile("${rootProject.rootDir}/meta/formatting/google-style-eclipse.xml")
+    }
+}
+
+javadoc {
+    if (JavaVersion.current().isJava8Compatible()) {
+        options.addStringOption('Xdoclint:none', '-quiet')
+        logging.captureStandardError LogLevel.INFO
+        logging.captureStandardOutput LogLevel.INFO
+    }
+
+    if (JavaVersion.current().isJava9Compatible()) {
+        options.addBooleanOption('html5', true)
+    }
+}
+
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
+afterEvaluate { project ->
+    ext.isReleaseVersion = !version.endsWith("RELEASE")
+}
+
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            //artifactId = project.artifactId // or maybe archiveBaseName?
+            from components.java
+            pom {
+                name = project.archivesBaseName
+                description = project.description
+                url = "https://github.com/RealYusufIsmail/Java-Api-Fork"
+                packaging = "jar"
+
+                licenses {
+                    license {
+                        name = "${gpl_name}"
+                        url = "${gpl_url}"
+                    }
+                }
+                developers {
+                    developer {
+                        id = "${dev_id}"
+                        name = "${dev_name}"
+                        email = "${dev_email}"
+                        organization = "${dev_organization}"
+                        organizationUrl = "${dev_organizationUrl}"
+                    }
+                }
+                scm {
+                    connection = 'https://github.com/RealYusufIsmail/Java-Api-Fork.git'
+                    developerConnection = 'scm:git:ssh://git@github.com/RealYusufIsmail/Java-Api-Fork.git'
+                    url = 'github.com/RealYusufIsmail/Java-Api-Fork'
+                }
+            }
+        }
+    }
     repositories {
-        mavenLocal()
-        if (project.hasProperty('sonatypeUsername') && project.hasProperty('sonatypePassword')) {
-            mavenDeployer {
-                beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+        maven {
+            afterEvaluate { project ->
+                def releaseRepo = "https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/"
+                def snapshotRepo = "https://s01.oss.sonatype.org/content/repositories/snapshots/"
+                url = (isReleaseVersion) ? releaseRepo : snapshotRepo
 
-                repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                    authentication(userName: sonatypeUsername, password: sonatypePassword)
-                }
+                //println "repos: " + version
+                //println "repos: " + isReleaseVersion
+                //println url
 
-                snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                    authentication(userName: sonatypeUsername, password: sonatypePassword)
-                }
-
-                pom.project {
-                    name 'elasticio-java-api'
-                    packaging 'jar'
-                    description 'Java API for elastic.io'
-                    url 'http://www.elastic.io'
-                    inceptionYear '2014'
-
-                    organization {
-                        name 'elastic.io GmbH'
-                        url 'http://www.elastic.io'
-                    }
-
-                    scm {
-                        url 'scm:git@github.com:elasticio/java-api.git'
-                        connection 'scm:git@github.com:elasticio/java-api.git'
-                        developerConnection 'scm:git@github.com:elasticio/java-api.git'
-                    }
-
-                    licenses {
-                        license {
-                            name 'The Apache Software License, Version 2.0'
-                            url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                            distribution 'repo'
-                        }
-                    }
-
-                    issueManagement {
-                        system 'GitHub'
-                        url 'https://github.com/elasticio/java-api/issues'
-                    }
-
-                    developers {
-                        developer {
-                            id 'elasticio'
-                            name 'elastic.io GmbH'
-                            email 'support@elastic.io'
-                        }
-                    }
+                credentials {
+                    username = project.hasProperty('ossrhUsername') ? ossrhUsername : "Unknown user"
+                    password = project.hasProperty('ossrhPassword') ? ossrhPassword : "Unknown password"
                 }
             }
         }
     }
 }
 
-
-task sourceJar(type: Jar) {
-    classifier = 'sources'
-    from sourceSets.main.allJava
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-task javadocs(type: Javadoc) {
-    source = sourceSets.main.allJava
-    classpath = configurations.compile
-}
-
-artifacts {
-    archives sourceJar
-    archives javadocJar
-}
-
-task wrapper(type: Wrapper) {
-    gradleVersion = '2.0'
+signing {
+    afterEvaluate { project ->
+        //println "sign: " + version
+        //println "sign: " + isReleaseVersion
+        required { isReleaseVersion && gradle.taskGraph.hasTask("publish") }
+        sign publishing.publications.mavenJava
+    }
 }

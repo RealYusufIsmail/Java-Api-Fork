@@ -1,13 +1,14 @@
-package io.elastic.api;
+package io.realyusufismail.elastic.api;
 
+import io.elastic.api.EventEmitter;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 
-import javax.json.Json;
-import javax.json.JsonObject;
 import java.io.Serializable;
 
 /**
- * Represents parameters for a {@link Module} execution passed
- * to {@link Module#execute(ExecutionParameters)}.
+ * Represents parameters for a {@link IModule} execution passed
+ * to {@link IModule#execute(ExecutionParameters)}.
  */
 public final class ExecutionParameters implements Serializable {
 

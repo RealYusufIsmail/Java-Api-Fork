@@ -1,13 +1,12 @@
 package io.elastic.api.demo;
 
-import io.elastic.api.Module;
-import io.elastic.api.ExecutionParameters;
-import io.elastic.api.Message;
+import io.realyusufismail.elastic.api.ExecutionParameters;
+import io.realyusufismail.elastic.api.IModule;
+import io.realyusufismail.elastic.api.Message;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
 
-import javax.json.Json;
-import javax.json.JsonObject;
-
-public class EchoComponent implements Module {
+public class EchoComponent implements IModule {
 
     public void execute(ExecutionParameters parameters) {
 

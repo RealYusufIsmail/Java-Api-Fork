@@ -1,21 +1,22 @@
-package io.elastic.api;
+package io.realyusufismail.elastic.api;
 
 
-import javax.json.Json;
-import javax.json.JsonObject;
-import javax.json.JsonWriter;
+import jakarta.json.Json;
+import jakarta.json.JsonObject;
+import jakarta.json.JsonWriter;
+
 import java.io.Serializable;
 import java.io.StringWriter;
 import java.util.UUID;
 
 /**
- * Message to be processed by a {@link Module}. A message may have a body,
+ * Message to be processed by a {@link IModule}. A message may have a body,
  * which represents a message's payload to be processed, and multiple attachments.
  * Both body and attachments are {@link JsonObject}s.
  *
  * <p>
  *
- * A {@link Module} may retrieve a value from {@link Message}'s body by a name,
+ * A {@link IModule} may retrieve a value from {@link Message}'s body by a name,
  * as shown in the following example.
  *
  * <pre>

@@ -1,6 +1,8 @@
-package io.elastic.api;
+package io.realyusufismail.elastic.api;
 
-import javax.json.JsonObject;
+import io.elastic.api.CredentialsVerifier;
+import jakarta.json.JsonObject;
+
 
 /**
  * Thrown by {@link CredentialsVerifier#verify(JsonObject)}

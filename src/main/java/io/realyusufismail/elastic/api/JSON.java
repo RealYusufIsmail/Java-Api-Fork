@@ -1,10 +1,10 @@
-package io.elastic.api;
+package io.realyusufismail.elastic.api;
 
 
-import javax.json.*;
+import jakarta.json.*;
+
 import java.io.ByteArrayInputStream;
 import java.io.StringWriter;
-import java.util.concurrent.Callable;
 
 /**
  * JSON utilities.

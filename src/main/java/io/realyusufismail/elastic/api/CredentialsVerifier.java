@@ -1,7 +1,8 @@
 package io.elastic.api;
 
 
-import javax.json.JsonObject;
+import io.realyusufismail.elastic.api.InvalidCredentialsException;
+import jakarta.json.JsonObject;
 
 /**
  * Interface to be implemented by components to verify user's

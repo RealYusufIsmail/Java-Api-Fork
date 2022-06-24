@@ -1,4 +1,4 @@
-package io.elastic.api;
+package io.realyusufismail.elastic.api;
 
 import java.io.InputStream;
 import java.util.HashMap;

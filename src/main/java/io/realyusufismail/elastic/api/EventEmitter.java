@@ -1,18 +1,17 @@
-package io.elastic.api;
+package io.realyusufismail.elastic.api;
 
+import jakarta.json.JsonObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javax.json.JsonObject;
-
 /**
- * Used by a {@link Module} to communicate with the elastic.io runtime.
+ * Used by a {@link IModule} to communicate with the elastic.io runtime.
  * 
  * The implementation of this class has been inspired by the <a
  * href="http://nodejs.org/api/events.html" target="_blank">Node.js
  * EventEmitter</a> class.
  * 
- * @see Module
+ * @see IModule
  */
 public final class EventEmitter {
     private static final Logger logger = LoggerFactory.getLogger(EventEmitter.class);
