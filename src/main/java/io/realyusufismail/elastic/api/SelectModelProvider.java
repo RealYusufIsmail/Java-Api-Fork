@@ -20,6 +20,7 @@ public interface SelectModelProvider {
      * {
      *     "de" : "Germany"
      *     "us" : "United States"
+     *     "uk" : "United Kingdom"
      * }
      * </code>
      * </pre>

@@ -12,7 +12,7 @@ import org.slf4j.LoggerFactory;
  * 
  * @see IModule
  */
-public final class EventEmitter {
+public class EventEmitter {
     private static final Logger logger = LoggerFactory.getLogger(EventEmitter.class);
 
     private Callback errorCallback;

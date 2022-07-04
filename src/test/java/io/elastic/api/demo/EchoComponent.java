@@ -20,8 +20,7 @@ public class EchoComponent implements IModule {
 
         final Message msg = parameters.getMessage();
 
-        final ObjectNode body = JsonNodeFactory.instance.objectNode()
-            .set("echo", msg.getBody());
+        final ObjectNode body = JsonNodeFactory.instance.objectNode().set("echo", msg.getBody());
 
         body.set("config", parameters.getConfiguration());
 
