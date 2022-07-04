@@ -1,11 +1,10 @@
 package io.realyusufismail.elastic.api;
 
-import io.elastic.api.CredentialsVerifier;
-import jakarta.json.JsonObject;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
- * Thrown by {@link CredentialsVerifier#verify(JsonObject)} when authentication credentials are
+ * Thrown by {@link CredentialsVerifier#verify(ObjectNode)} when authentication credentials are
  * invalid.
  */
 public class InvalidCredentialsException extends Exception {

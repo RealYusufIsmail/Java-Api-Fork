@@ -1,7 +1,8 @@
 package io.realyusufismail.elastic.api;
 
-import jakarta.json.Json;
-import jakarta.json.JsonObject;
+
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.Serializable;
 
@@ -14,12 +15,12 @@ public final class ExecutionParameters implements Serializable {
     private static final long serialVersionUID = 1L;
 
     private final Message message;
-    private final JsonObject configuration;
-    private final JsonObject snapshot;
+    private final ObjectNode configuration;
+    private final ObjectNode snapshot;
     private final EventEmitter eventEmitter;
 
     private ExecutionParameters(final Message message, final EventEmitter eventEmitter,
-            final JsonObject configuration, final JsonObject snapshot) {
+            final ObjectNode configuration, final ObjectNode snapshot) {
         this.message = message;
         this.configuration = configuration;
         this.snapshot = snapshot;
@@ -40,7 +41,7 @@ public final class ExecutionParameters implements Serializable {
      *
      * @return json object representing component's configuration
      */
-    public JsonObject getConfiguration() {
+    public ObjectNode getConfiguration() {
         return configuration;
     }
 
@@ -49,7 +50,7 @@ public final class ExecutionParameters implements Serializable {
      *
      * @return json object representing component's snapshot
      */
-    public JsonObject getSnapshot() {
+    public ObjectNode getSnapshot() {
         return snapshot;
     }
 
@@ -62,8 +63,8 @@ public final class ExecutionParameters implements Serializable {
      */
     public static final class Builder {
         private final Message message;
-        private JsonObject configuration;
-        private JsonObject snapshot;
+        private ObjectNode configuration;
+        private ObjectNode snapshot;
         private EventEmitter eventEmitter;
 
 
@@ -83,8 +84,8 @@ public final class ExecutionParameters implements Serializable {
 
             this.message = message;
             this.eventEmitter = eventEmitter;
-            this.configuration = Json.createObjectBuilder().build();
-            this.snapshot = Json.createObjectBuilder().build();
+            this.configuration = JsonNodeFactory.instance.objectNode();
+            this.snapshot = JsonNodeFactory.instance.objectNode();
         }
 
         /**
@@ -93,7 +94,7 @@ public final class ExecutionParameters implements Serializable {
          * @param configuration component's configuration
          * @return this instance
          */
-        public Builder configuration(JsonObject configuration) {
+        public Builder configuration(ObjectNode configuration) {
             this.configuration = configuration;
 
             return this;
@@ -105,7 +106,7 @@ public final class ExecutionParameters implements Serializable {
          * @param snapshot component's snapshot
          * @return this instance
          */
-        public Builder snapshot(JsonObject snapshot) {
+        public Builder snapshot(ObjectNode snapshot) {
             this.snapshot = snapshot;
 
             return this;

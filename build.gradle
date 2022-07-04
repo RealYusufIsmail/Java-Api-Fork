@@ -23,14 +23,16 @@ apply plugin: 'signing'
 archivesBaseName = "Java Api Fork"
 description = "A fork of Java Api"
 group 'io.github.realyusufismail'
-version '2.2.2'
+version '2.2.3'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'org.glassfish:jakarta.json:2.0.1'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.13.3'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.13.3'
+    implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.13.3'
     implementation 'ch.qos.logback:logback-classic:1.2.11'
     implementation 'ch.qos.logback:logback-core:1.2.11'
     testImplementation 'org.codehaus.groovy:groovy-all:3.0.11'

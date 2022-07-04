@@ -1,18 +1,16 @@
 package io.realyusufismail.elastic.api;
 
 
-import jakarta.json.Json;
-import jakarta.json.JsonObject;
-import jakarta.json.JsonWriter;
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.Serializable;
-import java.io.StringWriter;
 import java.util.UUID;
 
 /**
  * Message to be processed by a {@link IModule}. A message may have a body, which represents a
  * message's payload to be processed, and multiple attachments. Both body and attachments are
- * {@link JsonObject}s.
+ * {@link ObjectNode}s.
  *
  * <p>
  *
@@ -35,7 +33,7 @@ import java.util.UUID;
  *     &#64;code
  *     JsonArray orders = JSON.parseArray(response.getOrders());
  *
- *     JsonObject body = Json.createObjectBuilder().add("orders", orders).build();
+ *     ObjectNode body = Json.createObjectBuilder().add("orders", orders).build();
  *
  *     Message message = new Message.Builder().body(body).build();
  * }
@@ -52,10 +50,10 @@ public class Message implements Serializable {
     public static final String PROPERTY_PASSTHROUGH = "passthrough";
 
     private UUID id;
-    private JsonObject headers;
-    private JsonObject body;
-    private JsonObject attachments;
-    private JsonObject passthrough;
+    private ObjectNode headers;
+    private ObjectNode body;
+    private ObjectNode attachments;
+    private ObjectNode passthrough;
 
     /**
      * Creates a message with headers, body and attachments.
@@ -66,8 +64,8 @@ public class Message implements Serializable {
      * @param attachments attachments of the message
      * @param passthrough passthrough of the message
      */
-    private Message(final UUID id, final JsonObject headers, final JsonObject body,
-            final JsonObject attachments, final JsonObject passthrough) {
+    private Message(final UUID id, final ObjectNode headers, final ObjectNode body,
+            final ObjectNode attachments, final ObjectNode passthrough) {
 
         if (id == null) {
             throw new IllegalArgumentException("Message id must not be null");
@@ -110,7 +108,7 @@ public class Message implements Serializable {
      *
      * @return headers
      */
-    public JsonObject getHeaders() {
+    public ObjectNode getHeaders() {
         return headers;
     }
 
@@ -119,7 +117,7 @@ public class Message implements Serializable {
      *
      * @return body
      */
-    public JsonObject getBody() {
+    public ObjectNode getBody() {
         return body;
     }
 
@@ -128,7 +126,7 @@ public class Message implements Serializable {
      *
      * @return attachments
      */
-    public JsonObject getAttachments() {
+    public ObjectNode getAttachments() {
         return attachments;
     }
 
@@ -137,34 +135,29 @@ public class Message implements Serializable {
      *
      * @return passthrough
      */
-    public JsonObject getPassthrough() {
+    public ObjectNode getPassthrough() {
         return passthrough;
     }
 
     /**
-     * Returns this message as {@link JsonObject}.
+     * Returns this message as {@link ObjectNode}.
      *
      * @return message as JSON object
      */
-    public JsonObject toJsonObject() {
-        return Json.createObjectBuilder()
-            .add(PROPERTY_ID, id.toString())
-            .add(PROPERTY_HEADERS, headers)
-            .add(PROPERTY_BODY, body)
-            .add(PROPERTY_ATTACHMENTS, attachments)
-            .add(PROPERTY_PASSTHROUGH, passthrough)
-            .build();
+    public ObjectNode toObjectNode() {
+        ObjectNode message = JsonNodeFactory.instance.objectNode();
+        message.put(PROPERTY_ID, id.toString());
+        message.set(PROPERTY_HEADERS, headers);
+        message.set(PROPERTY_BODY, body);
+        message.set(PROPERTY_ATTACHMENTS, attachments);
+        message.set(PROPERTY_PASSTHROUGH, passthrough);
+        return message;
     }
 
     @Override
     public String toString() {
-        final JsonObject json = toJsonObject();
-        final StringWriter writer = new StringWriter();
-        final JsonWriter jsonWriter = Json.createWriter(writer);
-        jsonWriter.writeObject(json);
-        jsonWriter.close();
-
-        return writer.toString();
+        final ObjectNode json = JsonNodeFactory.instance.objectNode();
+        return json.toString();
     }
 
     /**
@@ -172,20 +165,20 @@ public class Message implements Serializable {
      */
     public static final class Builder {
         private UUID id;
-        private JsonObject headers;
-        private JsonObject body;
-        private JsonObject attachments;
-        private JsonObject passthrough;
+        private ObjectNode headers;
+        private ObjectNode body;
+        private ObjectNode attachments;
+        private ObjectNode passthrough;
 
         /**
          * Default constructor.
          */
         public Builder() {
             this.id = UUID.randomUUID();
-            this.headers = Json.createObjectBuilder().build();
-            this.body = Json.createObjectBuilder().build();
-            this.attachments = Json.createObjectBuilder().build();
-            this.passthrough = Json.createObjectBuilder().build();
+            this.headers = JsonNodeFactory.instance.objectNode();
+            this.body = JsonNodeFactory.instance.objectNode();
+            this.attachments = JsonNodeFactory.instance.objectNode();
+            this.passthrough = JsonNodeFactory.instance.objectNode();
         }
 
         /**
@@ -207,7 +200,7 @@ public class Message implements Serializable {
          * @param headers headers for the message
          * @return same builder instance
          */
-        public Builder headers(final JsonObject headers) {
+        public Builder headers(final ObjectNode headers) {
 
             this.headers = headers;
 
@@ -220,7 +213,7 @@ public class Message implements Serializable {
          * @param body body for the message
          * @return same builder instance
          */
-        public Builder body(final JsonObject body) {
+        public Builder body(final ObjectNode body) {
 
             this.body = body;
 
@@ -233,7 +226,7 @@ public class Message implements Serializable {
          * @param attachments attachments for the message
          * @return same builder instance
          */
-        public Builder attachments(final JsonObject attachments) {
+        public Builder attachments(final ObjectNode attachments) {
             this.attachments = attachments;
 
             return this;
@@ -245,7 +238,7 @@ public class Message implements Serializable {
          * @param passthrough passthrough for the message
          * @return same builder instance
          */
-        public Builder passthrough(final JsonObject passthrough) {
+        public Builder passthrough(final ObjectNode passthrough) {
             this.passthrough = passthrough;
 
             return this;

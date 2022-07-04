@@ -1,8 +1,7 @@
-package io.elastic.api;
+package io.realyusufismail.elastic.api;
 
 
-import io.realyusufismail.elastic.api.InvalidCredentialsException;
-import jakarta.json.JsonObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Interface to be implemented by components to verify user's credentials before they are persisted.
@@ -23,5 +22,5 @@ public interface CredentialsVerifier {
      * @param configuration contains OAuth access token, API key, username/password to be verified
      * @throws InvalidCredentialsException if the credentials are invalid
      */
-    void verify(JsonObject configuration) throws InvalidCredentialsException;
+    void verify(ObjectNode configuration) throws InvalidCredentialsException;
 }

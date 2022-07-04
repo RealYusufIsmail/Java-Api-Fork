@@ -1,6 +1,6 @@
 package io.realyusufismail.elastic.api;
 
-import jakarta.json.JsonObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -58,12 +58,12 @@ public final class EventEmitter {
     }
 
     /**
-     * Emits {@link JsonObject} snapshot.
+     * Emits {@link ObjectNode} snapshot.
      * 
      * @param snapshot snapshot to emit
      * @return this instance
      */
-    public EventEmitter emitSnapshot(JsonObject snapshot) {
+    public EventEmitter emitSnapshot(ObjectNode snapshot) {
 
         return emit(snapshotCallback, snapshot);
     }
@@ -88,7 +88,7 @@ public final class EventEmitter {
      * @param object object containing the tokens
      * @return this instance
      */
-    public EventEmitter emitUpdateKeys(JsonObject object) {
+    public EventEmitter emitUpdateKeys(ObjectNode object) {
 
         return emitOptional(updateKeysCallback, "updateKeys", object);
     }

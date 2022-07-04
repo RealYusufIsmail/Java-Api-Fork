@@ -1,7 +1,8 @@
 package io.realyusufismail.elastic.api;
 
-import jakarta.json.Json;
-import jakarta.json.JsonObject;
+
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * A component is an unit implementing a custom business logic to be executed in the elastic.io
@@ -18,13 +19,13 @@ import jakarta.json.JsonObject;
  * </p>
  *
  * <p>
- * A configuration is an instance {@link JsonObject} containing required information, such as API
+ * A configuration is an instance {@link ObjectNode} containing required information, such as API
  * key or username/password combination, that components needs to collect from user to function
  * properly.
  * </p>
  *
  * <p>
- * A snapshot is an instance of {@link JsonObject} that represents component's state. For example, a
+ * A snapshot is an instance of {@link ObjectNode} that represents component's state. For example, a
  * Twitter timeline component might store the id of the last retrieved tweet for the next execution
  * in order to ask Twitter for tweets whose ids are greater than the one in the snapshot.
  * </p>
@@ -39,15 +40,14 @@ import jakarta.json.JsonObject;
  * <pre>
  * <code>
  *
- * public class EchoComponent implements Module {
+ * public class EchoComponent implements IModule {
  *
  *
  *    &#064;Override
  *    public void execute(ExecutionParameters parameters) {
  *
- *       final JsonObject snapshot = Json.createObjectBuilder()
- *               .add("echo", parameters.getSnapshot())
- *               .build();
+ *       final ObjectNode snapshot = JsonNodeFactory.instance.objectNode()
+ *               .put("echo", parameters.getSnapshot());
  *
  *       parameters.getEventEmitter()
  *          .emitSnapshot(snapshot)
@@ -58,10 +58,9 @@ import jakarta.json.JsonObject;
  *
  *       final Message msg = parameters.getMessage();
  *
- *       final JsonObject body = Json.createObjectBuilder()
- *               .add("echo", msg.getBody())
- *               .add("config", parameters.getConfiguration())
- *               .build();
+ *       final ObjectNode body = JsonNodeFactory.instance.objectNode()
+ *               .puy("echo", msg.getBody())
+ *               .puy("config", parameters.getConfiguration());
  *
  *       return new Message.Builder()
  *                   .body(body)
@@ -97,8 +96,8 @@ public interface IModule {
      * @param configuration component's configuration
      * @return JSON object to be persisted or null
      */
-    default JsonObject startup(final JsonObject configuration) {
-        return Json.createObjectBuilder().build();
+    default ObjectNode startup(final ObjectNode configuration) {
+        return JsonNodeFactory.instance.objectNode();
     }
 
     /**
@@ -109,8 +108,8 @@ public interface IModule {
      * @param configuration component's configuration
      * @return JSON object to be persisted or null
      */
-    default JsonObject shutdown(final JsonObject configuration) {
-        return Json.createObjectBuilder().build();
+    default ObjectNode shutdown(final ObjectNode configuration) {
+        return JsonNodeFactory.instance.objectNode();
     }
 
     /**
@@ -122,7 +121,7 @@ public interface IModule {
      *
      * @param configuration component's configuration
      */
-    default void init(final JsonObject configuration) {
+    default void init(final ObjectNode configuration) {
         // default implementation does nothing
     }
 }

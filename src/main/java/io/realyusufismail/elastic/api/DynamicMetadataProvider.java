@@ -1,6 +1,6 @@
 package io.realyusufismail.elastic.api;
 
-import jakarta.json.JsonObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * Interface to be implemented by components which want to provide dynamic metadata.
@@ -13,5 +13,5 @@ public interface DynamicMetadataProvider {
      * @param configuration data needed to execute the method
      * @return The JSON schema representing the meta model for this component
      */
-    JsonObject getMetaModel(JsonObject configuration);
+    ObjectNode getMetaModel(ObjectNode configuration);
 }
