@@ -1,17 +1,17 @@
 package io.elastic.api.demo;
 
+import com.fasterxml.jackson.databind.node.JsonNodeFactory;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import io.realyusufismail.elastic.api.ExecutionParameters;
 import io.realyusufismail.elastic.api.IModule;
 import io.realyusufismail.elastic.api.Message;
-import jakarta.json.Json;
-import jakarta.json.JsonObject;
 
 public class EchoComponent implements IModule {
 
     public void execute(ExecutionParameters parameters) {
 
-        final JsonObject snapshot =
-                Json.createObjectBuilder().add("echo", parameters.getSnapshot()).build();
+        final ObjectNode snapshot =
+                JsonNodeFactory.instance.objectNode().set("echo", parameters.getSnapshot());
 
         parameters.getEventEmitter().emitSnapshot(snapshot).emitData(echoMessage(parameters));
     }
@@ -20,10 +20,10 @@ public class EchoComponent implements IModule {
 
         final Message msg = parameters.getMessage();
 
-        final JsonObject body = Json.createObjectBuilder()
-            .add("echo", msg.getBody())
-            .add("config", parameters.getConfiguration())
-            .build();
+        final ObjectNode body = JsonNodeFactory.instance.objectNode()
+            .set("echo", msg.getBody());
+
+        body.set("config", parameters.getConfiguration());
 
         return new Message.Builder().body(body).attachments(msg.getAttachments()).build();
     }
